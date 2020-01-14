@@ -82,6 +82,7 @@ juicy = "juicy-ends-"+Target+".txt"
 def FindJuicyEndpoints():
 	outfile = open(juicy,"w+")
 	for line in open(notdup, "r"):
+		#feel free to add your key words here
 		if "url" in line or "redirect" in line or "redirect_url" in line or "redirectUrl" in line or "return" in line or "return_url" in line or "return_uri" in line or "next" in line or "next_url" in line or "goto" in line or "image=" in line or "fetch" in line or "target" in line or ".sql" in line or "filename" in line or "file=" in line:
 			outfile.write(line)
 	outfile.close()
