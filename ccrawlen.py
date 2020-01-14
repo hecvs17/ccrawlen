@@ -2,7 +2,11 @@
 # This file is part of an external network pentest set of tools 
 # created and maintained by Laurent Gaffie.
 # email: laurent.gaffie@gmail.com
+<<<<<<< HEAD
 # Modified by @hecvs17 (Hamza) for bug bounty purposes.
+=======
+# Modified by @hecvs17 (Hamza) for bug bounties
+>>>>>>> dfc239c... v1
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -16,12 +20,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import requests, json, argparse, re, os, multiprocessing, sqlite3
+import requests, json, argparse, re, os, multiprocessing, sqlite3, subprocess
 
 parser = argparse.ArgumentParser()
 parser.add_argument('domain', help = 'Target domain to lookup', type = str)
 args = parser.parse_args()
 Target = args.domain
+
+
+cmd = "mkdir "+Target+""
+subprocess.call(cmd, shell=True)
+currentDir = os.getcwd()
 
 def DbConnect():
     cursor = sqlite3.connect('./Results.db')
@@ -64,11 +73,11 @@ def GetSubdomains(cursor):
      for row in res.fetchall():
          print('Subdomain found: {0}'.format(row[0]))
 
-name = "files-"+Target+".txt"
+name = currentDir+"/"+Target+"/"+"files-"+Target+".txt"
 def SaveTofile(url):
 	with open(name,"a+") as f:
     		f.write(url+"\n")
-notdup = "unik-urls-"+Target+".txt"
+notdup = currentDir+"/"+Target+"/"+"unik-urls-"+Target+".txt"
 def RemoveDuplicate():
 	lines_seen = set() # holds lines already seen
 	outfile = open(notdup, "w+")
@@ -78,7 +87,7 @@ def RemoveDuplicate():
         		lines_seen.add(line)
 	outfile.close()
 
-juicy = "juicy-ends-"+Target+".txt"
+juicy = currentDir+"/"+Target+"/"+"juicy-ends-"+Target+".txt"
 def FindJuicyEndpoints():
 	outfile = open(juicy,"w+")
 	for line in open(notdup, "r"):
@@ -86,7 +95,17 @@ def FindJuicyEndpoints():
 		if "url" in line or "redirect" in line or "redirect_url" in line or "redirectUrl" in line or "return" in line or "return_url" in line or "return_uri" in line or "next" in line or "next_url" in line or "goto" in line or "image=" in line or "fetch" in line or "target" in line or ".sql" in line or "filename" in line or "file=" in line:
 			outfile.write(line)
 	outfile.close()
-	
+jsfiles = currentDir+"/"+Target+"/"+"jsfiles-"+Target+".txt"
+def FindJSfiles():
+	outfile = open(jsfiles, "w+")
+	lines_seen = set()
+	for line in open(notdup,"r"):
+		if ".js" in line:
+			if line not in lines_seen:
+				outfile.write(line)
+				lines_seen.add(line)
+	outfile.close()
+
 def GetLinks(CdxApi, IndexNum):
 	print("Processing {0}".format(IndexNum))
 	Req = requests.get(CdxApi+'?url='+Target+'&fl=url&matchType=domain&pageSize=2000&output=json')
@@ -124,6 +143,6 @@ def main():
 	GetSubdomains(cursor)
 	RemoveDuplicate()
 	FindJuicyEndpoints()
-
+	FindJSfiles()
 if __name__ == '__main__':
 	main()
