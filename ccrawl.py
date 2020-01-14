@@ -67,7 +67,7 @@ name = "files-"+Target+".txt"
 def SaveTofile(url):
 	with open(name,"a+") as f:
     		f.write(url+"\n")
-notdup = "unik-urls"+Target+".txt"
+notdup = "unik-urls-"+Target+".txt"
 def RemoveDuplicate():
 	lines_seen = set() # holds lines already seen
 	outfile = open(notdup, "w+")
@@ -77,7 +77,7 @@ def RemoveDuplicate():
         		lines_seen.add(line)
 	outfile.close()
 
-juicy = "juicy-ends"+Target+".txt"
+juicy = "juicy-ends-"+Target+".txt"
 def FindJuicyEndpoints():
 	outfile = open(juicy,"w+")
 	for line in open(notdup, "r"):
