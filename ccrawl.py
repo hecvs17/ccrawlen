@@ -2,6 +2,7 @@
 # This file is part of an external network pentest set of tools 
 # created and maintained by Laurent Gaffie.
 # email: laurent.gaffie@gmail.com
+# Modified by @hecvs17 (Hamza) for bug bounty purposes.
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
