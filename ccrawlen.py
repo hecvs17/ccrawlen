@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #@hecsv17/Hamza
-import requests, json, argparse, re, os, multiprocessing, sqlite3, subprocess
+import requests, json, argparse, re, os, multiprocessing, subprocess
 
 print('''
    CCrawlEN v1.0
